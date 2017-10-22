@@ -1,0 +1,17 @@
+
+public class ATM {
+	private Bank associatedBank;	// The associated bank with this ATM
+	private int maxWithdrawAmount;	// The max amount of money that can be withdrawn from this ATM
+	
+	public ATM(Bank associatedBank, int maxWithdrawAmount) {
+		this.associatedBank = associatedBank;
+		this.maxWithdrawAmount = maxWithdrawAmount;
+	}
+	
+	// sendWithdrawRequest method to bank ????
+	public String withdraw() {
+		associatedBank.checkBalance();
+		return "";
+	}
+	
+}

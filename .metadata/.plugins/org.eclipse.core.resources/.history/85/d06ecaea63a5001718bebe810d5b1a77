@@ -1,0 +1,56 @@
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+
+public class Bank {
+	private String id;
+	private HashSet<ATM> atms;
+	private HashSet<BankAccount> accounts;	// Each customer's respective bank accounts within this bank
+	private Map<BankAccount, HashSet<ATM>> accountToATMs;
+	
+	public Bank(String id) {
+		this.id = id;
+		this.accountToATMs = new HashMap<BankAccount, HashSet<ATM>>();
+		this.accounts = new HashSet<BankAccount>();
+	}
+	
+	public String getId() {
+		return this.id;
+	}
+	
+	public void addBankAccount(BankAccount account) {
+		accounts.add(account);
+	}
+	
+	public BankAccount validateAccount(String cardNumber) {
+		BankAccount acc = null;
+		for (BankAccount account : accounts) {
+			if (account.getAssociatedCashCard().getCardNumber().toLowerCase().equals(cardNumber)) {
+				return account;
+			}
+		}
+		return acc;
+	}
+	
+	// Either logs transaction with respective card, or sends error message
+	public void withdraw(BankAccount account, double amount) {
+		if (account.getBalance() >= amount) {
+			System.out.print("Withdraw successful. ");
+			System.out.printf("$%.2f", amount);
+			System.out.print(" withdrawn from your account.\n");
+			account.setBalance(account.getBalance() - amount);
+		}
+		else {	// insufficient funds
+			System.out.println("This amount exceeds the maximum amount you can withdraw per transaction. Please enter the amount or quit.");
+		}
+	}
+	
+	public boolean hasATM(ATM atm) {
+		if (atms.contains(atm)) {
+			return true;
+		}
+		return false;
+	}
+	
+}

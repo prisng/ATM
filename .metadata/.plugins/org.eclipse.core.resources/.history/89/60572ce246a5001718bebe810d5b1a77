@@ -1,0 +1,43 @@
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+
+public class Bank {
+	private BankAccount account;	// Each bank has 0 or 1 bank account -- do I delete this???
+	private HashSet<ATM> atms;
+	private Map<BankAccount, HashSet<ATM>> accountToATMs;
+	
+	public Bank() {
+		this.accountToATMs = new HashMap<BankAccount, HashSet<ATM>>();
+	}
+	
+	// is this method only in ATM?
+	// Either logs transaction with respective card, or gives error message
+	public String withdraw() {
+		// checkBalance();
+		return "";
+	}
+	
+	// Checks whether or not there's sufficient funds in the bank account
+	// return false if not, true if so
+	public boolean checkBalance() {
+		// accessor from bank account
+		return true;
+	}
+	
+	public boolean hasATM(ATM atm) {
+		if (atms.contains(atm)) {
+			return true;
+		}
+		return false;
+	}
+	
+	// I probably don't need this method bc ATM already has-an (associated) bank
+	/*
+	// Adds an ATM to this bank
+	public void addATM(ATM atm) {
+		atms.add(atm);
+	}
+	*/
+}

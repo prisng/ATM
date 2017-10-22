@@ -1,0 +1,44 @@
+import java.util.ArrayList;
+
+public class Bank {
+    private String bankID;
+    private ArrayList<ATM> atm = new ArrayList<>();
+    private ArrayList<BankAccount> BankAccounts = new ArrayList<>();
+
+    public Bank(String bankID){
+        this.bankID = bankID;
+    }
+
+    public void addBankAccount(BankAccount theBankAccount){
+        BankAccounts.add(theBankAccount);
+    }
+    public BankAccount findBankAccount(String cardNumber){
+        BankAccount theBankAccount = null;
+        for(BankAccount theAcc: BankAccounts){
+            if(theAcc.getCashCardAssociated().getCardNumber().equals(cardNumber)){
+                theBankAccount = theAcc;
+            } else {
+                return null;
+            }
+        }
+        return theBankAccount;
+    }
+    public String getBankID(){
+        return bankID;
+    }
+    public boolean checkCardPassword(String cardNumber, String password){
+        return findBankAccount(cardNumber).getPassword().equals(password);
+
+    }
+
+
+    public String withdraw(String cardNumb, double transactionAmount) {
+        double currentBalance = findBankAccount(cardNumb).getBalance();
+        if(transactionAmount <= currentBalance){
+            findBankAccount(cardNumb).setBalance(currentBalance-transactionAmount);
+            return "$"+transactionAmount +"is withdrawn from  your BankAccount. Remaining balance for card number " +cardNumb+" : "+"$"+findBankAccount(cardNumb).getBalance()+". If you have more transactions, enter the amount or quit.";
+        } else {
+            return "The amount exceeds the current balance of "+ currentBalance +" . Enter another amount or quit.";
+        }
+    }
+}

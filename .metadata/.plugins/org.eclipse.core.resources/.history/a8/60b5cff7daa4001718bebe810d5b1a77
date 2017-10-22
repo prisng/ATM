@@ -1,0 +1,71 @@
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Scanner;
+
+public class ATMTester {
+	// tester class -- create banks A and B
+	// create cards
+	// create accounts
+	// add accounts to respective banks, withdraw $$$ from ATMs
+	
+	public static void main(String[] args) throws ParseException {
+		// create all that shit here
+		
+		// Format for cash card expiration dates
+		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+		
+		Bank a = new Bank();
+		
+		Date date1 = new java.sql.Date(dateFormat.parse("09/28/2017").getTime());
+		CashCard ca_a1 = new CashCard("A11", date1);
+		BankAccount account_a1 = new BankAccount(ca_a1, "mypassword1", 100);
+		
+		Date date2 = new java.sql.Date(dateFormat.parse("08/22/2020").getTime());
+		CashCard ca_a2 = new CashCard("A12", date2);
+		BankAccount account_a2 = new BankAccount(ca_a2, "mypassword2", 100);
+		
+		ATM atm_a1 = new ATM(a, 50);
+		ATM atm_a2 = new ATM(a, 50);
+		//a.addATM(atm_a1);
+		//a.addATM(atm_a2);
+		
+		Bank b = new Bank();
+		ATM atm_b1 = new ATM(b, 50);
+		ATM atm_b2 = new ATM(b, 50);
+		//b.addATM(atm_b1);
+		//b.addATM(atm_b2);
+		
+		// Begin user interaction
+		Scanner main = new Scanner(System.in);
+		
+		boolean quit = true;
+		while (quit == true) {
+			/*
+			System.out.println("Enter your choice of ATM: ");
+			String input = main.nextLine().toLowerCase();
+			if (input.equals("atm_a1") || input.equals("atm_a2") || input.equals("atm_b1") || input.equals("atm_b2")) {
+				System.out.println("Enter your card identity: ");
+				String cardIdentity = main.nextLine().toLowerCase();
+			}
+			else {
+				System.out.println("There is no ATM with that identity");
+			}
+			*/
+			System.out.println("Enter your choice of bank (A or B): ");
+			String input = main.nextLine().toLowerCase();
+			switch(input) {
+				case "a" :
+					System.out.println("A chosen");
+					break;
+				case "b" :
+					System.out.println("B chosen");
+					break;
+				default :
+					System.out.println("Invalid choice.");
+					break;
+			}
+		}
+	}
+}

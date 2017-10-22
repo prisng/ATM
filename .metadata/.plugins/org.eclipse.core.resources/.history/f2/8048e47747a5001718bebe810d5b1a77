@@ -1,0 +1,30 @@
+
+public class BankAccount {
+	private CashCard associatedCashCard;
+	private String cardNumber;
+	private String password;
+	private int balance;
+	
+	public BankAccount(CashCard associatedCashCard, String password, int balance) {
+		this.associatedCashCard = associatedCashCard;
+		this.cardNumber = cardNumber;
+		this.password = password;
+		this.balance = balance;
+	}
+	
+	public CashCard getAssociatedCashCard() {
+		return this.associatedCashCard;
+	}
+	
+	public String getCardNumber() {
+		return this.cardNumber;
+	}
+	
+	public String getPassword() {
+		return this.password;
+	}
+	
+	public int getBalance() {
+		return this.balance;
+	}
+}

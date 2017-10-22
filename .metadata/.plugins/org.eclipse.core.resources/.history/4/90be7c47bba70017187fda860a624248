@@ -1,0 +1,86 @@
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+public class ATM {
+	private Bank associatedBank;	// The associated bank with this ATM
+	private int maxWithdrawAmount;	// The max amount of money that can be withdrawn from this ATM
+	
+	public ATM(Bank associatedBank, int maxWithdrawAmount) {
+		this.associatedBank = associatedBank;
+		this.maxWithdrawAmount = maxWithdrawAmount;
+	}
+	
+	public Bank getAssociatedBank() {
+		return this.associatedBank;
+	}
+	
+	// checks the associated bank for the associated card
+	public boolean validateCard(String cashCard) {
+		//BankAccount acc = null;
+		if (this.associatedBank.validateAccount(cashCard) != null) {
+			BankAccount acc = this.associatedBank.validateAccount(cashCard);
+			CashCard card = acc.getAssociatedCashCard();
+			if (checkExpiration(card) == true) {
+				System.out.println("This card is expired and returned to you.");
+				return false;
+			}
+			return true;
+		}
+		else {
+			//System.out.println("There is no associated card with this bank.");
+			return false;
+		}
+	}
+	
+	// return true if authorized -> if authorized -> move into withdraw method in bank
+	public boolean authorizeCard(String cashCard, String password) {
+		BankAccount acc = this.associatedBank.validateAccount(cashCard);
+		if (acc.getPassword().equals(password)) {
+			return true;
+		}
+		return false;
+	}
+	
+	// return true if expired
+	public boolean checkExpiration(CashCard card) {
+		Date expirationDate = card.getExpirationDate();
+		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+		Date todaysDate = new Date();
+		dateFormat.format(todaysDate);
+		if (expirationDate.before(todaysDate)) {
+			return true;
+		}
+		return false;
+	}
+	
+	
+	// sendWithdrawRequest method to bank ????
+	public void withdrawRequest(BankAccount account, double amount) {
+		//if (authorizeCard(card) == true)
+		if (amount <= this.maxWithdrawAmount) {
+			associatedBank.withdraw(account, amount);
+		}
+		else {
+			System.out.println("This amount exceeds the maximum amount you can withdraw per transaction.");
+		}
+	}
+	
+	public void getStateOfATM() {
+		System.out.println("ATM from Bank " + this.getClass().getSimpleName() + this.getAssociatedBank().getId());
+		System.out.println("\tThe maximum amount that a cash card can withdraw per day: " + this.maxWithdrawAmount);
+	}
+	
+	public static void main(String[] args) throws ParseException {
+		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+		Date date3 = new java.sql.Date(dateFormat.parse("02/15/2021").getTime());
+		CashCard test = new CashCard("B", "B11", date3);
+		Bank b = new Bank("B");
+		BankAccount ba = new BankAccount(b, test, "hi", 50);
+		ATM atm = new ATM(b, 50);
+		System.out.println(new Date());
+		System.out.println(date3);
+		System.out.println(atm.checkExpiration(test));
+	}
+}

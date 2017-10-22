@@ -1,0 +1,37 @@
+
+public class ATM {
+	private Bank associatedBank;	// The associated bank with this ATM
+	private int maxWithdrawAmount;	// The max amount of money that can be withdrawn from this ATM
+	
+	public ATM(Bank associatedBank, int maxWithdrawAmount) {
+		this.associatedBank = associatedBank;
+		this.maxWithdrawAmount = maxWithdrawAmount;
+	}
+	
+	public Bank getAssociatedBank() {
+		return this.associatedBank;
+	}
+	
+	// checks the associated bank for the associated card
+	public boolean validateCard(String cashCard) {
+		//BankAccount acc = null;
+		if (this.associatedBank.validateAccount(cashCard) == null) {
+			System.out.println("There is no associated card with this bank.");
+		}
+		else {
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean authorize(String password) {
+		return false;
+	}
+	
+	// sendWithdrawRequest method to bank ????
+	public String withdraw() {
+		associatedBank.checkBalance();
+		return "";
+	}
+	
+}

@@ -1,0 +1,17 @@
+import java.util.Date;
+
+public class CashCard {
+    private String cardNumber;
+    private Date expirationDate;
+
+    public CashCard(String cardNumber, Date expirationDate){
+        this.cardNumber = cardNumber;
+        this.expirationDate = expirationDate;
+    }
+    public String getCardNumber(){
+        return cardNumber;
+    }
+    public Date getExpirationDate(){
+        return expirationDate;
+    }
+}

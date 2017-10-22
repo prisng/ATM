@@ -1,0 +1,235 @@
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Scanner;
+
+/**
+ * to do: make the code generalizable instead of hard-coding each atm case
+ * fix entering an expired card (doesn't work for a11, and it says that b11 is expired when it isn't)
+ * extra erorr message comes up when entering a11
+ * @author prisng
+ *
+ */
+public class ATMSystem {
+	
+	public static void main(String[] args) throws ParseException {
+		// Creating all objects for ATM system
+		
+		// Format for cash card expiration dates
+		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+		
+		Bank a = new Bank("A");
+		
+		Date date1 = new java.sql.Date(dateFormat.parse("09/28/1997").getTime());
+		CashCard ca_a1 = new CashCard("A", "A11", date1);
+		BankAccount account_a1 = new BankAccount(a, ca_a1, "mypassword1", 100);
+		a.addBankAccount(account_a1);
+		
+		Date date2 = new java.sql.Date(dateFormat.parse("08/22/2020").getTime());
+		CashCard ca_a2 = new CashCard("A", "A12", date2);
+		BankAccount account_a2 = new BankAccount(a, ca_a2, "mypassword2", 100);
+		a.addBankAccount(account_a2);
+		
+		ATM atm_a1 = new ATM(a, 50);
+		ATM atm_a2 = new ATM(a, 50);
+		
+		Bank b = new Bank("B");
+		
+		Date date3 = new java.sql.Date(dateFormat.parse("02/15/2021").getTime());
+		CashCard ca_b1 = new CashCard("B", "B11", date3);
+		BankAccount account_b1 = new BankAccount(b, ca_b1, "mypassword3", 100);
+		b.addBankAccount(account_b1);
+		
+		Date date4 = new java.sql.Date(dateFormat.parse("08/20/2021").getTime());
+		CashCard ca_b2 = new CashCard("B", "B12", date4);
+		BankAccount account_b2 = new BankAccount(b, ca_b2, "mypassword4", 100);
+		b.addBankAccount(account_b2);
+		
+		ATM atm_b1 = new ATM(b, 50);
+		ATM atm_b2 = new ATM(b, 50);
+		
+		// Print out the states of two banks
+		System.out.println("Assume all banks have $100.00 preloaded.\n");
+		
+		System.out.println("State of Bank A");
+		System.out.println("--------------------------------");
+		a.getStateOfBank();
+		
+		System.out.println();
+		
+		System.out.println("State of Bank B");
+		System.out.println("--------------------------------");
+		b.getStateOfBank();
+		
+		System.out.println();
+		
+		// Print out the states of ATMs
+		System.out.println("State of ATMs :");
+		System.out.println("--------------------------------");
+		
+		System.out.print("ATM_A1 : ");
+		atm_a1.getStateOfATM();
+		System.out.print("ATM_A2 : ");
+		atm_a2.getStateOfATM();
+		System.out.print("ATM_B1 : ");
+		atm_b1.getStateOfATM();
+		System.out.print("ATM_B2 : ");
+		atm_b2.getStateOfATM();
+		
+		
+		// Begin user interaction
+		Scanner main = new Scanner(System.in);
+		System.out.println("\n--------------------------------");
+		
+		boolean quit = true;
+		while (quit == true) {
+			System.out.println("\nEnter your choice of ATM: ");
+			String input = main.nextLine().toLowerCase();
+			switch(input) {
+				case "atm_a1" :
+					System.out.println("ATM_A1 chosen");
+					System.out.println("Enter your card: ");
+					String cardInput = main.nextLine().toLowerCase();
+					if (atm_a1.validateCard(cardInput) == true) {
+						System.out.println("This card is accepted. Please enter your password: ");
+						boolean authorized = false;
+						while (authorized == false) {
+							String passwordInput = main.nextLine();
+							
+							if (atm_a1.authorizeCard(cardInput, passwordInput) == true) {
+								System.out.println("Authorization accepted.");
+								// start transaction with bank
+								BankAccount acc = atm_a1.getAssociatedBank().validateAccount(cardInput);
+								boolean quitTransaction = false;
+								while (quitTransaction == false) {
+									System.out.print("Remaining account balance: ");
+									System.out.printf("$%.2f\n", acc.getBalance());
+									System.out.println("Enter the amount to withdraw or enter 'quit' to quit: ");
+									if (main.hasNextInt()) {
+										int withdrawAmount = main.nextInt();
+										atm_a2.withdrawRequest(acc, withdrawAmount);
+									}
+									if (main.nextLine().equals("quit")) {
+										quitTransaction = true;
+									}
+								}	// end while loop
+								break;
+							}
+							else if (passwordInput.equals("quit")) {
+								System.out.println("Redirecting to ATM selection.");
+								break;
+							}
+							else {
+								System.out.println("Authorization denied. Retry entering your password or enter 'quit' to quit: ");
+							}
+							
+						}	// end while loop
+					}
+					else {
+						System.out.println("There is no associated card with that bank. Redirecting to ATM selection.");
+						break;
+					}
+					break;
+					
+				case "atm_a2" :
+					System.out.println("ATM_A2 chosen");
+					System.out.println("Enter your card: ");
+					String cardInput2 = main.nextLine().toLowerCase();
+					if (atm_a2.validateCard(cardInput2) == true) {
+						System.out.println("This card is accepted. Please enter your password: ");
+						boolean authorized = false;
+						while (authorized == false) {
+							String passwordInput = main.nextLine();
+							
+							if (atm_a2.authorizeCard(cardInput2, passwordInput) == true) {
+								System.out.println("Authorization accepted.");
+								// start transaction with bank
+								BankAccount acc = atm_a2.getAssociatedBank().validateAccount(cardInput2);
+								boolean quitTransaction = false;
+								while (quitTransaction == false) {
+									System.out.print("Remaining account balance: ");
+									System.out.printf("$%.2f\n", acc.getBalance());
+									System.out.println("Enter the amount to withdraw or enter 'quit' to quit: ");
+									if (main.hasNextInt()) {
+										int withdrawAmount = main.nextInt();
+										atm_a2.withdrawRequest(acc, withdrawAmount);
+									}
+									if (main.nextLine().equals("quit")) {
+										quitTransaction = true;
+									}
+								}	// end while loop
+								break;
+							}
+							else if (passwordInput.equals("quit")) {
+								System.out.println("Redirecting to ATM selection.");
+								break;
+							}
+							else {
+								System.out.println("Authorization denied. Retry entering your password or enter 'quit' to quit: ");
+							}
+							
+						}	// end while loop
+					}
+					else {
+						System.out.println("There is no associated card with that bank. Redirecting to ATM selection.");
+						break;
+					}
+					break;
+					
+				case "atm_b1" :
+					System.out.println("ATM_B1 chosen");
+					System.out.println("Enter your card: ");
+					String cardInput3 = main.nextLine().toLowerCase();
+					if (atm_b1.validateCard(cardInput3) == true) {
+						System.out.println("This card is accepted. Please enter your password: ");
+						boolean authorized = false;
+						while (authorized == false) {
+							String passwordInput = main.nextLine();
+							
+							if (atm_b1.authorizeCard(cardInput3, passwordInput) == true) {
+								System.out.println("Authorization accepted.");
+								// start transaction with bank
+								BankAccount acc = atm_b1.getAssociatedBank().validateAccount(cardInput3);
+								boolean quitTransaction = false;
+								while (quitTransaction == false) {
+									System.out.print("Remaining account balance: ");
+									System.out.printf("$%.2f\n", acc.getBalance());
+									System.out.println("Enter the amount to withdraw or enter 'quit' to quit: ");
+									if (main.hasNextInt()) {
+										int withdrawAmount = main.nextInt();
+										atm_b1.withdrawRequest(acc, withdrawAmount);
+									}
+									if (main.nextLine().equals("quit")) {
+										quitTransaction = true;
+									}
+								}	// end while loop
+								break;
+							}
+							else if (passwordInput.equals("quit")) {
+								System.out.println("Redirecting to ATM selection.");
+								break;
+							}
+							else {
+								System.out.println("Authorization denied. Retry entering your password or enter 'quit' to quit: ");
+							}
+							
+						}	// end while loop
+					}
+					else {
+						System.out.println("There is no associated card with that bank. Redirecting to ATM selection.");
+						break;
+					}
+					break;
+					
+				case "atm_b2" :
+					System.out.println("ATM_B2 chosen");
+					System.out.println("Enter your card: ");
+					break;
+				default :
+					System.out.println("Invalid choice. yo");
+					break;
+			}
+		}
+	}
+}

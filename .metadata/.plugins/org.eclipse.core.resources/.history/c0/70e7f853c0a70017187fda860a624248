@@ -1,0 +1,25 @@
+import java.util.Date;
+
+public class CashCard {
+	private String bankID;
+    private String cardNumber;
+    private Date expirationDate;
+
+    public CashCard(String bankID, String cardNumber, Date expirationDate){
+    	this.bankID = bankID;
+        this.cardNumber = cardNumber;
+        this.expirationDate = expirationDate;
+    }
+    
+    public String getBankID() {
+    	return this.bankID;
+    }
+    
+    public String getCardNumber(){
+        return cardNumber;
+    }
+    
+    public Date getExpirationDate(){
+        return expirationDate;
+    }
+}

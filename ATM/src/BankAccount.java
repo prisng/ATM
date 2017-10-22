@@ -1,0 +1,70 @@
+/**
+ * A class that represents a bank account.
+ * 
+ * @author 		Priscilla Ng
+ * @copyright	10/2/2017
+ * @version		1.0
+ * 
+ */
+public class BankAccount {
+	private Bank associatedBank;
+	private CashCard associatedCashCard;
+	private String password;
+	private double balance;
+	
+	/**
+	 * Constructs a bank account with an associated bank, an associated cash card, password, and initial balance.
+	 * @param associatedBank		the bank associated with this bank account
+	 * @param associatedCashCard	the cash card associated with this bank account
+	 * @param password				the password of this bank account
+	 * @param balance				the balance of this bank account
+	 */
+	public BankAccount(Bank associatedBank, CashCard associatedCashCard, String password, double balance) {
+		this.associatedBank = associatedBank;
+		this.associatedCashCard = associatedCashCard;
+		this.password = password;
+		this.balance = balance;
+	}
+	
+	/**
+	 * Gets the associated bank of this bank account.
+	 * @return	the associated bank of this bank account
+	 */
+	public Bank getAssociatedBank() {
+		return this.associatedBank;
+	}
+	
+	/**
+	 * Gets the associated cash card with this bank account.
+	 * @return	the associated cash card with this bank account
+	 */
+	public CashCard getAssociatedCashCard() {
+		return this.associatedCashCard;
+	}
+	
+	/**
+	 * Gets the password of this bank account.
+	 * @return	the password of this bank account
+	 */
+	public String getPassword() {
+		return this.password;
+	}
+	
+	/**
+	 * Gets the balance of this bank account.
+	 * @return	the balance of this bank account
+	 */
+	public double getBalance() {
+		return this.balance;
+	}
+	
+	/**
+	 * Sets a new balance for this bank account.
+	 * @param newBalance	the new balance of this bank account
+	 * @precondition		newBalance must be a valid number
+	 * @postcondition		the balance of this bank account will be set to the new balance
+	 */
+	public void setBalance(double newBalance) {
+		this.balance = newBalance;
+	}
+}
